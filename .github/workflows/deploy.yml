@@ -1,0 +1,27 @@
+name: Deploy MkDocs Blog
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: 安装mkdocs
+        run: pip install mkdocs mkdocs-material
+      - name: 打包静态站点
+        run: mkdocs build
+      - name: 上传产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: 部署Pages
+        uses: actions/deploy-pages@v4
