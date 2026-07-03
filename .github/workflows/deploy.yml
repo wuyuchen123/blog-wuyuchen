@@ -16,8 +16,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: 安装依赖并打包站点
+      - name: 初始化VitePress并打包站点
         run: |
+          # 仅在无package.json时初始化
+          if [ ! -f "package.json" ]; then
+            npm init vitepress . -y
+          fi
           npm install
           npm run docs:build
       - name: 上传静态网站文件
